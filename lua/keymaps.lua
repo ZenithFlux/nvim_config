@@ -7,7 +7,10 @@ end
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-map_keys('n', '<C-Up>', '<C-W>k', "Go to above window")
-map_keys('n', '<C-Down>', '<C-W>j', "Go to below window")
-map_keys('n', '<C-Left>', '<C-W>h', "Go to left window")
-map_keys('n', '<C-Right>', '<C-W>l', "Go to right window")
+map_keys('n', '<Up>', '<C-W>W', "Go to previous window")
+map_keys('n', '<Down>', '<C-W>w', "Go to next window")
+map_keys('n', '<Left>', '<cmd>bp<CR>', "Go to previous buffer")
+map_keys('n', '<Right>', '<cmd>bn<CR>', "Go to next buffer")
+map_keys({'n','v'}, '<leader>p', '\"_dP', "Paste without yanking")
+map_keys('', '<C-D>', '<C-D>zz', "Scroll half page down and center cursor")
+map_keys('', '<C-U>', '<C-U>zz', "Scroll half page up and center cursor")
