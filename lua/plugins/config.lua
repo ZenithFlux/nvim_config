@@ -1,15 +1,15 @@
-require('neodev').setup()
-
 -- [[ Configure Telescope ]]
+local ignore_patterns = { 'node_modules', '.git', '.venv' }
+
 require('telescope').setup {
-  defaults = {
-    mappings = {
-      i = {
-        ['<C-u>'] = false,
-        ['<C-d>'] = false,
-      },
+  pickers = {
+    live_grep = {
+      file_ignore_patterns = ignore_patterns,
     },
-  },
+    find_files = {
+      file_ignore_patterns = ignore_patterns,
+    }
+  }
 }
 
 pcall(require('telescope').load_extension, 'fzf')
@@ -195,6 +195,7 @@ local servers = {
       -- diagnostics = { disable = { 'missing-fields' } },
     },
   },
+  pyright = {},
 }
 
 require('mason').setup()
@@ -281,4 +282,3 @@ require('which-key').register({
   ['<leader>'] = { name = 'VISUAL <leader>' },
   ['<leader>h'] = { 'Git [H]unk' },
 }, { mode = 'v' })
-
