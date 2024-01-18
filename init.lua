@@ -54,5 +54,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
+if vim.loop.os_uname().sysname == 'Windows_NT' then
+  vim.o.shell = 'pwsh'
+end
+
 -- The line beneath this is called `modeline`.
 -- vim: ts=2 sts=2 sw=2 et
