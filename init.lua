@@ -34,7 +34,6 @@ vim.o.undofile = true
 vim.wo.signcolumn = 'yes'
 vim.o.updatetime = 250
 vim.o.timeoutlen = 300
-vim.o.completeopt = 'menuone,noselect'
 
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.o.ignorecase = true
