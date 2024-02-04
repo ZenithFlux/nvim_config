@@ -196,7 +196,13 @@ local servers = {
       -- diagnostics = { disable = { 'missing-fields' } },
     },
   },
-  pyright = {},
+
+  pyright = {
+    python = {
+      analysis = { typeCheckingMode = "off" },
+    }
+  },
+
   marksman = {},
 }
 
@@ -257,6 +263,7 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'path' },
+    { name = 'nvim_lsp_signature_help' },
   },
 }
 

@@ -18,15 +18,24 @@ local function map(mode, lhs, rhs, desc)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
+
+map('', '<C-D>', '<C-D>zz', "Scroll half page down and center cursor")
+map('', '<C-U>', '<C-U>zz', "Scroll half page up and center cursor")
+map({'n','v'}, '<leader>p', '"_dP', "[P]aste without yanking")
+
 map('n', '<Up>', '<C-W>W', "Go to previous window")
 map('n', '<Down>', '<C-W>w', "Go to next window")
 map('n', '<Left>', vim.cmd.bp, "Go to previous buffer")
 map('n', '<Right>', vim.cmd.bn, "Go to next buffer")
-map({'n','v'}, '<leader>p', '"_dP', "[P]aste without yanking")
-map('', '<C-D>', '<C-D>zz', "Scroll half page down and center cursor")
-map('', '<C-U>', '<C-U>zz', "Scroll half page up and center cursor")
+map('n', 'gp', '`[v`]', 'Select last [P]asted text')
 map('n', '<leader>f', vim.cmd.E, 'Explore [F]iletree')
+
 map('v', 'r', '"ry:%s~<C-R>r~~gc<Left><Left><Left>', '[R]eplace Selected Text')
+map('v', '<', '<gv', 'Outdent without exiting visual mode')
+map('v', '>', '>gv', 'Indent without exiting visual mode')
+map('v', '<C-J>', 'dp`[V`]', 'Move selected lines down')
+map('v', '<C-K>', 'dkP`[V`]', 'Move selected lines up')
+
 map('t', '<Esc>', '<C-\\><C-N>', 'Exit Terminal Mode')
 
 vim.keymap.set('n', '<leader>l', function()
