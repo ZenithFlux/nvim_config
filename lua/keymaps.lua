@@ -13,30 +13,27 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 ----------------------
 
-local function map(mode, lhs, rhs, desc)
-  local opts = {remap=true, desc=desc}
-  vim.keymap.set(mode, lhs, rhs, opts)
-end
 
+vim.keymap.set('', '<C-D>', '<C-D>zz', { desc = 'Scroll half page down and center cursor' })
+vim.keymap.set('', '<C-U>', '<C-U>zz', { desc = 'Scroll half page up and center cursor' })
+vim.keymap.set({'n','v'}, '<leader>p', '"_dP', { desc = '[P]aste without yanking' })
 
-map('', '<C-D>', '<C-D>zz', "Scroll half page down and center cursor")
-map('', '<C-U>', '<C-U>zz', "Scroll half page up and center cursor")
-map({'n','v'}, '<leader>p', '"_dP', "[P]aste without yanking")
+vim.keymap.set('n', '<C-P>', '<C-L>', { desc = 'Clears and redraws the screen' })
+vim.keymap.set('n', '<C-K>', '<C-W>W', { desc = 'Go to previous window' })
+vim.keymap.set('n', '<C-J>', '<C-W>w', { desc = 'Go to next window' })
+vim.keymap.set('n', '<C-H>', vim.cmd.bp, { desc = 'Go to previous buffer' })
+vim.keymap.set('n', '<C-L>', vim.cmd.bn, { desc = 'Go to next buffer' })
+vim.keymap.set('n', '<leader>;', vim.cmd.bd, { desc = 'Buffer delete' })
+vim.keymap.set('n', 'gp', '`[v`]', { desc = 'Select last [P]asted text' })
+vim.keymap.set('n', '<leader>f', vim.cmd.E, { desc = 'Explore [F]iletree' })
 
-map('n', '<Up>', '<C-W>W', "Go to previous window")
-map('n', '<Down>', '<C-W>w', "Go to next window")
-map('n', '<Left>', vim.cmd.bp, "Go to previous buffer")
-map('n', '<Right>', vim.cmd.bn, "Go to next buffer")
-map('n', 'gp', '`[v`]', 'Select last [P]asted text')
-map('n', '<leader>f', vim.cmd.E, 'Explore [F]iletree')
+vim.keymap.set('v', 'r', '"ry:%s~<C-R>r~~gc<Left><Left><Left>', { desc = '[R]eplace Selected Text' })
+vim.keymap.set('v', '<', '<gv', { desc = 'Outdent without exiting visual mode' })
+vim.keymap.set('v', '>', '>gv', { desc = 'Indent without exiting visual mode' })
+vim.keymap.set('v', '<C-J>', 'dp`[V`]', { desc = 'Move selected lines down' })
+vim.keymap.set('v', '<C-K>', 'dkP`[V`]', { desc = 'Move selected lines up' })
 
-map('v', 'r', '"ry:%s~<C-R>r~~gc<Left><Left><Left>', '[R]eplace Selected Text')
-map('v', '<', '<gv', 'Outdent without exiting visual mode')
-map('v', '>', '>gv', 'Indent without exiting visual mode')
-map('v', '<C-J>', 'dp`[V`]', 'Move selected lines down')
-map('v', '<C-K>', 'dkP`[V`]', 'Move selected lines up')
-
-map('t', '<Esc>', '<C-\\><C-N>', 'Exit Terminal Mode')
+vim.keymap.set('t', '<Esc>', '<C-\\><C-N>', { desc = 'Exit Terminal Mode' })
 
 vim.keymap.set('n', '<leader>l', function()
   if vim.diagnostic.is_disabled() then
