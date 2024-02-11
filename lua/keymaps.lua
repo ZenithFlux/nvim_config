@@ -30,8 +30,8 @@ vim.keymap.set('n', '<leader>f', vim.cmd.E, { desc = 'Explore [F]iletree' })
 vim.keymap.set('v', 'r', '"ry:%s~<C-R>r~~gc<Left><Left><Left>', { desc = '[R]eplace Selected Text' })
 vim.keymap.set('v', '<', '<gv', { desc = 'Outdent without exiting visual mode' })
 vim.keymap.set('v', '>', '>gv', { desc = 'Indent without exiting visual mode' })
-vim.keymap.set('v', '<C-J>', 'dp`[V`]', { desc = 'Move selected lines down' })
-vim.keymap.set('v', '<C-K>', 'dkP`[V`]', { desc = 'Move selected lines up' })
+vim.keymap.set('v', '<C-K>', '"mdk"mP`[V`]', { desc = 'Move selected lines up' })
+vim.keymap.set('v', '<C-J>', '"md"mp`[V`]', { desc = 'Move selected lines down' })
 
 vim.keymap.set('t', '<Esc>', '<C-\\><C-N>', { desc = 'Exit Terminal Mode' })
 

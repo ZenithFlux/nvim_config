@@ -5,9 +5,11 @@ require('telescope').setup {
   pickers = {
     live_grep = {
       file_ignore_patterns = ignore_patterns,
+      additional_args = { '--hidden' },
     },
     find_files = {
       file_ignore_patterns = ignore_patterns,
+      hidden = true,
     }
   }
 }
@@ -70,7 +72,6 @@ local function telescope_live_grep_open_files()
 end
 vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = '[S]earch [/] in Open Files' })
 vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
@@ -78,7 +79,10 @@ vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]re
 vim.keymap.set('n', '<leader>sG', vim.cmd.LiveGrepGitRoot, { desc = '[S]earch by [G]rep on Git Root' })
 vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus' })
+vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[G]it [C]ommits' })
+
 
 -- [[ Configure Treesitter ]]
 -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
@@ -269,14 +273,14 @@ cmp.setup {
 
 -- document existing key chains
 require('which-key').register {
-  ['<leader>c'] = { '[C]ode' },
-  ['<leader>d'] = { '[D]ocument' },
-  ['<leader>g'] = { '[G]it' },
-  ['<leader>h'] = { 'Git [H]unk' },
-  ['<leader>r'] = { '[R]ename' },
-  ['<leader>s'] = { '[S]earch' },
-  ['<leader>t'] = { '[T]oggle' },
-  ['<leader>w'] = { '[W]orkspace' },
+  ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
+  ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
+  ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
+  ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
+  ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
+  ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
+  ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
+  ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
 }
 
 -- register which-key VISUAL mode

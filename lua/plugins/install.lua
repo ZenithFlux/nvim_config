@@ -112,8 +112,8 @@ return {
         end, { desc = 'git blame line' })
         map('n', '<leader>hd', gs.diffthis, { desc = 'git diff against index' })
         map('n', '<leader>hD', function()
-          gs.diffthis '~0'
-        end, { desc = 'git diff against last commit' })
+          gs.diffthis('~' .. vim.v.count)
+        end, { desc = 'git diff against HEAD~[count]' })
 
         -- Toggles
         map('n', '<leader>tb', gs.toggle_current_line_blame, { desc = 'toggle git blame line' })
