@@ -33,8 +33,8 @@ vim.o.linebreak = true
 vim.o.breakindent = true
 vim.o.undofile = true
 vim.wo.signcolumn = 'yes'
-vim.o.updatetime = 250
-vim.o.timeoutlen = 300
+vim.o.updatetime = 1000
+vim.o.timeoutlen = 500
 vim.o.scrolloff = 10
 
 -- Case-insensitive searching UNLESS \C or capital in search

@@ -2,6 +2,12 @@
 local ignore_patterns = { 'node_modules', '.git', '.venv' }
 
 require('telescope').setup {
+  defaults = {
+    path_display = function(opts, path)
+      local tail = require("telescope.utils").path_tail(path)
+      return string.format("%s: %s", tail, path)
+    end,
+  },
   pickers = {
     live_grep = {
       file_ignore_patterns = ignore_patterns,
@@ -100,7 +106,7 @@ vim.defer_fn(function()
       keymaps = {
         init_selection = 'Z',
         node_incremental = 'Z',
-        scope_incremental = '<c-space>',
+        scope_incremental = '<C-B>',
         node_decremental = 'X',
       },
     },
