@@ -104,7 +104,7 @@ vim.defer_fn(function()
     incremental_selection = {
       enable = true,
       keymaps = {
-        init_selection = 'Z',
+        init_selection = '<M-Z>',
         node_incremental = 'Z',
         scope_incremental = '<C-B>',
         node_decremental = 'X',
@@ -168,6 +168,8 @@ local on_attach = function(_, bufnr)
 
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
+
+  vim.keymap.set('n', '<leader>!' , vim.cmd.LspRestart, { buffer = bufnr, desc = 'Restart LSP' })
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
@@ -287,6 +289,7 @@ require('which-key').register {
   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
   ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+  ['<leader>o'] = { name = 'Vim [O]ptions', _ = 'which_key_ignore' },
 }
 
 -- register which-key VISUAL mode
