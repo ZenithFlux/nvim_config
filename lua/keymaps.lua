@@ -24,14 +24,12 @@ vim.keymap.set('n', '<C-H>', vim.cmd.bp, { desc = 'Go to previous buffer' })
 vim.keymap.set('n', '<C-L>', vim.cmd.bn, { desc = 'Go to next buffer' })
 vim.keymap.set('n', '<leader>;', vim.cmd.bd, { desc = 'Delete current buffer' })
 vim.keymap.set('n', 'gp', '`[v`]', { desc = 'Select last [P]asted text' })
-vim.keymap.set('n', '<leader>f', vim.cmd.E, { desc = 'Explore [F]iletree' })
+vim.keymap.set('n', '<leader>f', function() vim.cmd.e '.' end, { desc = 'Go to [F]iletree root' })
 
 vim.keymap.set('v', '<leader>p', '"_dP', { desc = '[P]aste without yanking' })
 vim.keymap.set('v', 'r', '"ry:%s~<C-R>r~~gc<Left><Left><Left>', { desc = '[R]eplace Selected Text' })
 vim.keymap.set('v', '<', '<gv', { desc = 'Outdent without exiting visual mode' })
 vim.keymap.set('v', '>', '>gv', { desc = 'Indent without exiting visual mode' })
-vim.keymap.set('v', '<C-K>', '"mdk"mP`[V`]', { desc = 'Move selected lines up' })
-vim.keymap.set('v', '<C-J>', '"md"mp`[V`]', { desc = 'Move selected lines down' })
 
 vim.keymap.set('t', '<Esc>', '<C-\\><C-N>', { desc = 'Exit Terminal Mode' })
 

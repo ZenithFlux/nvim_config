@@ -53,7 +53,7 @@ local function live_grep_git_root()
   local git_root = find_git_root()
   if git_root then
     builtin.live_grep {
-      search_dirs = { git_root },
+      cwd = git_root,
     }
   end
 end
@@ -88,6 +88,8 @@ vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' }
 vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus' })
 vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[G]it [C]ommits' })
+vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = '[G]it [B]ranches' })
+vim.keymap.set('i', '<C-Z>', builtin.symbols, { desc = 'Select a symbol or emoji' })
 
 
 -- [[ Configure Treesitter ]]
@@ -104,7 +106,7 @@ vim.defer_fn(function()
     incremental_selection = {
       enable = true,
       keymaps = {
-        init_selection = '<M-Z>',
+        init_selection = 'Z',
         node_incremental = 'Z',
         scope_incremental = '<C-B>',
         node_decremental = 'X',
@@ -273,9 +275,9 @@ cmp.setup {
   },
   sources = {
     { name = 'nvim_lsp' },
+    { name = 'nvim_lsp_signature_help' },
     { name = 'luasnip' },
     { name = 'path' },
-    { name = 'nvim_lsp_signature_help' },
   },
 }
 
