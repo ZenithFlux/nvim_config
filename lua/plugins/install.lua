@@ -188,6 +188,7 @@ return {
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
+      'hiphish/rainbow-delimiters.nvim',
       {
         'nvim-treesitter/nvim-treesitter-context',
         opts = {
@@ -202,16 +203,22 @@ return {
   },
 
   {
-    "cappyzawa/trim.nvim",
-    opts = {
-      ft_blocklist = { "markdown" },
-    },
-  },
-
-  {
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     ft = { "markdown" },
     build = function() vim.fn["mkdp#util#install"]() end,
+  },
+
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    opts = { check_ts = true },
+  },
+
+  {
+    "cappyzawa/trim.nvim",
+    opts = {
+      ft_blocklist = { "markdown" },
+    },
   },
 }

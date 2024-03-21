@@ -21,9 +21,9 @@ require('lazy').setup('plugins.install', {})
 require('plugins.config')
 
 
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.o.expandtab = true
 vim.o.hlsearch = false
 vim.wo.number = true
 vim.wo.relativenumber = true
@@ -43,6 +43,12 @@ vim.o.smartcase = true
 -- Make sure the terminal supports this
 vim.o.termguicolors = true
 
+-- Modifying global dicts
+vim.g.python_indent = {
+  open_paren = "shiftwidth()",
+  closed_paren_align_last_line = false,
+  continue = "shiftwidth()",
+}
 
 -- [[ Highlight on yank ]]
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
