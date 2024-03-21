@@ -188,6 +188,7 @@ return {
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
+      'hiphish/rainbow-delimiters.nvim',
       {
         'nvim-treesitter/nvim-treesitter-context',
         opts = {
