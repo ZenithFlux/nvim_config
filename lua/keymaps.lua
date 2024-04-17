@@ -13,7 +13,6 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 ----------------------
 
-
 vim.keymap.set('', '<C-D>', '<C-D>zz', { desc = 'Scroll half page down and center cursor' })
 vim.keymap.set('', '<C-U>', '<C-U>zz', { desc = 'Scroll half page up and center cursor' })
 
@@ -24,7 +23,7 @@ vim.keymap.set('n', '<C-H>', vim.cmd.bp, { desc = 'Go to previous buffer' })
 vim.keymap.set('n', '<C-L>', vim.cmd.bn, { desc = 'Go to next buffer' })
 vim.keymap.set('n', '<leader>;', vim.cmd.bd, { desc = 'Delete current buffer' })
 vim.keymap.set('n', 'gp', '`[v`]', { desc = 'Select last [P]asted text' })
-vim.keymap.set('n', '<leader>f', function() vim.cmd.e '.' end, { desc = 'Go to [F]iletree root' })
+vim.keymap.set('n', '<leader>f', vim.cmd.E, { desc = 'Open [F]iletree' })
 
 vim.keymap.set('v', '<leader>p', '"_dP', { desc = '[P]aste without yanking' })
 vim.keymap.set('v', 'r', '"ry:%s~<C-R>r~~gc<Left><Left><Left>', { desc = '[R]eplace Selected Text' })

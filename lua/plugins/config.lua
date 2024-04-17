@@ -28,7 +28,7 @@ local function find_git_root()
   -- Use the current buffer's path as the starting point for the git search
   local current_file = vim.api.nvim_buf_get_name(0)
   local current_dir
-  local cwd = vim.fn.getcwd()
+  local cwd = vim.loop.cwd()
   -- If the buffer is not associated with a file, return nil
   if current_file == '' then
     current_dir = cwd
@@ -97,12 +97,17 @@ vim.keymap.set('i', '<C-Z>', builtin.symbols, { desc = 'Select a symbol or emoji
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'lua', 'python', 'sql', 'java', 'javascript', 'markdown', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = { 'c', 'cpp', 'lua', 'python', 'sql', 'javascript', 'markdown', 'vimdoc', 'vim', 'bash' },
 
     -- Autoinstall language if not installed when corresponding file is opened.
     auto_install = false,
 
     highlight = { enable = true },
+    indent = {
+      enable = true,
+      disable = { 'python' },
+    },
+
     incremental_selection = {
       enable = true,
       keymaps = {
@@ -184,7 +189,9 @@ local on_attach = function(_, bufnr)
   nmap('<leader>ws', builtin.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<leader>k', vim.lsp.buf.signature_help, 'Signature Documentation')
+  vim.keymap.set('i', '<C-J>', vim.lsp.buf.signature_help, {
+    buffer = bufnr, desc = 'Signature Documentation'
+  })
 
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
   nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
@@ -204,19 +211,22 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 --  the `settings` field of the server config.
 local servers = {
   lua_ls = {
-    Lua = {
-      workspace = { checkThirdParty = false },
-      telemetry = { enable = false },
-      -- diagnostics = { disable = { 'missing-fields' } },
+    settings = {
+      Lua = {
+        workspace = { checkThirdParty = false },
+        telemetry = { enable = false },
+        -- diagnostics = { disable = { 'missing-fields' } },
+      },
     },
   },
-
   pyright = {
-    python = {
-      analysis = { typeCheckingMode = "off" },
-    }
+    settings = {
+      python = {
+        analysis = { typeCheckingMode = "off" },
+      },
+    },
+    root_dir = vim.loop.cwd,
   },
-
   marksman = {},
 }
 
@@ -225,12 +235,12 @@ require('mason-lspconfig').setup {
   ensure_installed = vim.tbl_keys(servers),
   handlers = {
     function(server_name)
-      require('lspconfig')[server_name].setup {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        settings = servers[server_name],
-        filetypes = (servers[server_name] or {}).filetypes,
-      }
+      require('lspconfig')[server_name].setup(
+        vim.tbl_extend("keep", vim.F.if_nil(servers[server_name], {}), {
+          capabilities = capabilities,
+          on_attach = on_attach,
+        })
+      )
     end,
   }
 }
@@ -275,7 +285,6 @@ cmp.setup {
   },
   sources = {
     { name = 'nvim_lsp' },
-    { name = 'nvim_lsp_signature_help' },
     { name = 'luasnip' },
     { name = 'path' },
   },
@@ -300,3 +309,6 @@ require('which-key').register({
   ['<leader>'] = { name = 'VISUAL <leader>' },
   ['<leader>h'] = { 'Git [H]unk' },
 }, { mode = 'v' })
+
+-- [[ Configure highlight groups ]]
+vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", { bold = true, italic = true })
