@@ -45,6 +45,11 @@ return {
   {
     'folke/which-key.nvim',
     opts = {
+      plugins = {
+        presets = {
+          operators = false,
+        }
+      },
       triggers_blacklist = {
         n = { 'v' },
       }
@@ -160,9 +165,6 @@ return {
     },
   },
 
-  -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
-
   -- Fuzzy Finder (files, lsp, etc)
   {
     'nvim-telescope/telescope.nvim',
@@ -211,7 +213,10 @@ return {
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
-    opts = { check_ts = true },
+    opts = {
+      enable_bracket_in_quote = false,
+      check_ts = true,
+    },
   },
 
   {

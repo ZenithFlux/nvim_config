@@ -7,8 +7,6 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 ----------------------
@@ -23,7 +21,7 @@ vim.keymap.set('n', '<C-H>', vim.cmd.bp, { desc = 'Go to previous buffer' })
 vim.keymap.set('n', '<C-L>', vim.cmd.bn, { desc = 'Go to next buffer' })
 vim.keymap.set('n', '<leader>;', vim.cmd.bd, { desc = 'Delete current buffer' })
 vim.keymap.set('n', 'gp', '`[v`]', { desc = 'Select last [P]asted text' })
-vim.keymap.set('n', '<leader>f', vim.cmd.E, { desc = 'Open [F]iletree' })
+vim.keymap.set('n', '<leader>f', vim.cmd.Ex, { desc = 'Open [F]iletree' })
 
 vim.keymap.set('v', '<leader>p', '"_dP', { desc = '[P]aste without yanking' })
 vim.keymap.set('v', 'r', '"ry:%s~<C-R>r~~gc<Left><Left><Left>', { desc = '[R]eplace Selected Text' })
@@ -32,16 +30,14 @@ vim.keymap.set('v', '>', '>gv', { desc = 'Indent without exiting visual mode' })
 
 vim.keymap.set('t', '<Esc>', '<C-\\><C-N>', { desc = 'Exit Terminal Mode' })
 
-vim.keymap.set('n', '<leader>oh', function()
+vim.keymap.set('n', '<leader>ti', function()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end, { desc = "Toggle inlay hints" })
+
+vim.keymap.set('n', '<leader>th', function()
   vim.o.hlsearch = not vim.o.hlsearch
 end, { desc = 'Toggle hlsearch' })
 
-vim.keymap.set('n', '<leader>od', function()
-  if vim.diagnostic.is_disabled() then
-    vim.diagnostic.enable()
-    print('Diagnostics enabled')
-  else
-    vim.diagnostic.disable()
-    print('Diagnostics disabled')
-  end
+vim.keymap.set('n', '<leader>tx', function()
+  vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end, { desc = 'Toggle diagnostics' })

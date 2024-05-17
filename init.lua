@@ -3,7 +3,7 @@ require('keymaps')
 
 -- `lazy.nvim` plugin manager
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system {
     'git',
     'clone',
@@ -35,13 +35,11 @@ vim.wo.signcolumn = 'yes'
 vim.o.updatetime = 1000
 vim.o.timeoutlen = 500
 vim.o.scrolloff = 10
+vim.opt.guicursor:append('a:blinkon500-blinkoff500')
 
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.o.ignorecase = true
 vim.o.smartcase = true
-
--- Make sure the terminal supports this
-vim.o.termguicolors = true
 
 -- Modifying global dicts
 vim.g.python_indent = {
