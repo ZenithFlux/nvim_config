@@ -3,7 +3,8 @@ local ignore_patterns = { 'node_modules', '.git', '.venv' }
 
 require('telescope').setup {
   defaults = {
-    path_display = function(opts, path)
+    layout_config = { preview_width = 0.5 },
+    path_display = function(_, path)
       local tail = require("telescope.utils").path_tail(path)
       return string.format("%s: %s", tail, path)
     end,
@@ -188,7 +189,6 @@ local on_attach = function(_, bufnr)
   nmap('<leader>ds', builtin.lsp_document_symbols, '[D]ocument [S]ymbols')
   nmap('<leader>ws', builtin.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
-  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
   vim.keymap.set('i', '<C-J>', vim.lsp.buf.signature_help, {
     buffer = bufnr, desc = 'Signature Documentation'
   })
@@ -213,6 +213,7 @@ local servers = {
   lua_ls = {
     settings = {
       Lua = {
+        hint = { enable = true },
         workspace = { checkThirdParty = false },
         telemetry = { enable = false },
         -- diagnostics = { disable = { 'missing-fields' } },
@@ -236,7 +237,7 @@ require('mason-lspconfig').setup {
   handlers = {
     function(server_name)
       require('lspconfig')[server_name].setup(
-        vim.tbl_extend("keep", vim.F.if_nil(servers[server_name], {}), {
+        vim.tbl_extend("keep", servers[server_name] or {}, {
           capabilities = capabilities,
           on_attach = on_attach,
         })
@@ -300,7 +301,6 @@ require('which-key').register {
   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
   ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-  ['<leader>o'] = { name = 'Vim [O]ptions', _ = 'which_key_ignore' },
 }
 
 -- register which-key VISUAL mode
