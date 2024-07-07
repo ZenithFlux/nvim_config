@@ -98,7 +98,9 @@ vim.keymap.set('i', '<C-Z>', builtin.symbols, { desc = 'Select a symbol or emoji
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'lua', 'python', 'sql', 'javascript', 'markdown', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = {
+      'lua', 'vimdoc', 'vim', 'bash', 'python', 'markdown', 'c', 'cpp', 'cmake',
+    },
 
     -- Autoinstall language if not installed when corresponding file is opened.
     auto_install = false,
@@ -106,7 +108,7 @@ vim.defer_fn(function()
     highlight = { enable = true },
     indent = {
       enable = true,
-      disable = { 'python' },
+      disable = { 'python', 'c', 'cpp' },
     },
 
     incremental_selection = {
@@ -220,6 +222,7 @@ local servers = {
       },
     },
   },
+  bashls = {},
   pyright = {
     settings = {
       python = {
@@ -229,6 +232,8 @@ local servers = {
     root_dir = vim.loop.cwd,
   },
   marksman = {},
+  cmake = {},
+  clangd = {},
 }
 
 require('mason').setup()
@@ -266,18 +271,14 @@ cmp.setup {
     ['<C-Space>'] = cmp.mapping.complete {},
     ['<CR>'] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace },
     ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_locally_jumpable() then
+      if luasnip.expand_or_locally_jumpable() then
         luasnip.expand_or_jump()
       else
         fallback()
       end
     end, { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.locally_jumpable(-1) then
+      if luasnip.locally_jumpable(-1) then
         luasnip.jump(-1)
       else
         fallback()
