@@ -179,16 +179,16 @@ local on_attach = function(_, bufnr)
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
 
-  vim.keymap.set('n', '<leader>!' , vim.cmd.LspRestart, { buffer = bufnr, desc = 'Restart LSP' })
+  nmap('<leader>lR' , vim.cmd.LspRestart, '[R]estart LSP')
 
-  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+  nmap('<leader>lr', vim.lsp.buf.rename, '[R]ename')
+  nmap('<leader>la', vim.lsp.buf.code_action, 'Code [A]ction')
 
   nmap('gd', builtin.lsp_definitions, '[G]oto [D]efinition')
   nmap('gr', builtin.lsp_references, '[G]oto [R]eferences')
   nmap('gI', builtin.lsp_implementations, '[G]oto [I]mplementation')
-  nmap('<leader>D', builtin.lsp_type_definitions, 'Type [D]efinition')
-  nmap('<leader>ds', builtin.lsp_document_symbols, '[D]ocument [S]ymbols')
+  nmap('<leader>lt', builtin.lsp_type_definitions, '[T]ype Definition')
+  nmap('<leader>ls', builtin.lsp_document_symbols, 'Document [S]ymbols')
   nmap('<leader>ws', builtin.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
   vim.keymap.set('i', '<C-J>', vim.lsp.buf.signature_help, {
@@ -202,7 +202,7 @@ local on_attach = function(_, bufnr)
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
 
-  nmap('<leader>F', vim.lsp.buf.format, 'Format current buffer')
+  nmap('<leader>lF', vim.lsp.buf.format, '[F]ormat current buffer')
 end
 
 
@@ -294,11 +294,9 @@ cmp.setup {
 
 -- document existing key chains
 require('which-key').register {
-  ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-  ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
   ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
   ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
-  ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
+  ['<leader>l'] = { name = '[L]SP', _ = 'which_key_ignore' },
   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
   ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },

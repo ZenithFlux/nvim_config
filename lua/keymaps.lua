@@ -31,7 +31,7 @@ vim.keymap.set('v', '>', '>gv', { desc = 'Indent without exiting visual mode' })
 vim.keymap.set('t', '<Esc>', '<C-\\><C-N>', { desc = 'Exit Terminal Mode' })
 
 vim.keymap.set('n', '<leader>ti', function()
-  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({nil}))
 end, { desc = "Toggle inlay hints" })
 
 vim.keymap.set('n', '<leader>th', function()
