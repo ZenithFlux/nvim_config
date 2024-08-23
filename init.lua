@@ -1,26 +1,6 @@
 -- My non-plugin keymaps
 require('keymaps')
 
--- `lazy.nvim` plugin manager
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  vim.fn.system {
-    'git',
-    'clone',
-    '--filter=blob:none',
-    'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable',
-    lazypath,
-  }
-end
-vim.opt.rtp:prepend(lazypath)
-
-require('lazy').setup('plugins.install', {})
-
--- Contains both plugin configurations and keymaps
-require('plugins.config')
-
-
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
@@ -33,8 +13,9 @@ vim.o.breakindent = true
 vim.o.undofile = true
 vim.wo.signcolumn = 'yes'
 vim.o.updatetime = 1000
-vim.o.timeoutlen = 500
 vim.o.scrolloff = 10
+vim.o.sidescrolloff = 30
+vim.o.completeopt = "menu,preview,noinsert"
 vim.opt.guicursor:append('a:blinkon500-blinkoff500')
 vim.o.cino = '(0,m1,N-s,Ws,+0'
 
@@ -58,6 +39,27 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+
+-- `lazy.nvim` plugin manager
+local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  vim.fn.system {
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable',
+    lazypath,
+  }
+end
+vim.opt.rtp:prepend(lazypath)
+
+require('lazy').setup('plugins.install', {})
+
+-- Contains both plugin configurations and keymaps
+require('plugins.config')
+
 
 if vim.loop.os_uname().sysname == 'Windows_NT' then
   vim.o.shell = 'pwsh'

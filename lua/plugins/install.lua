@@ -9,6 +9,11 @@ return {
   'tpope/vim-sleuth',
 
   {
+    'mbbill/undotree',
+    cmd = "UndotreeToggle"
+  },
+
+  {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -44,15 +49,17 @@ return {
   -- Useful plugin to show you pending keybinds.
   {
     'folke/which-key.nvim',
+    event = 'VeryLazy',
     opts = {
+      delay = vim.o.timeoutlen,
       plugins = {
         presets = {
           operators = false,
         }
       },
-      triggers_blacklist = {
-        n = { 'v' },
-      }
+      defer = function(ctx)
+        return ctx.mode == 'v' or ctx.mode == 'V' or ctx.mode == '<C-V>'
+      end
     }
   },
 
@@ -150,6 +157,11 @@ return {
         component_separators = '|',
         section_separators = '',
       },
+      sections = {
+        lualine_c = {
+          { 'filename', path = 1 },
+        }
+      }
     },
   },
 

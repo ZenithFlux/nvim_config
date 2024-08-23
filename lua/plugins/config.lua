@@ -92,6 +92,9 @@ vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[G]it [C]ommits
 vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = '[G]it [B]ranches' })
 vim.keymap.set('i', '<C-Z>', builtin.symbols, { desc = 'Select a symbol or emoji' })
 
+vim.keymap.set('n', '<leader>sF', function()
+  builtin.find_files({ no_ignore = true, no_ignore_parent = true })
+end, { desc = '[S]earch [F]iles No-Ignore' })
 
 -- [[ Configure Treesitter ]]
 -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
@@ -99,7 +102,7 @@ vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = {
-      'lua', 'vimdoc', 'vim', 'bash', 'python', 'markdown', 'c', 'cpp', 'cmake',
+      'lua', 'vimdoc', 'vim', 'bash', 'python', 'c', 'cpp', 'cmake', 'markdown', 'markdown_inline',
     },
 
     -- Autoinstall language if not installed when corresponding file is opened.
@@ -264,11 +267,16 @@ cmp.setup {
     end,
   },
   mapping = {
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
+      else
+        cmp.complete()
+      end
+    end, { 'i', 's' }),
+    ['<C-p>'] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete {},
     ['<CR>'] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace },
     ['<Tab>'] = cmp.mapping(function(fallback)
       if luasnip.expand_or_locally_jumpable() then
@@ -292,22 +300,26 @@ cmp.setup {
   },
 }
 
--- document existing key chains
-require('which-key').register {
-  ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
-  ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
-  ['<leader>l'] = { name = '[L]SP', _ = 'which_key_ignore' },
-  ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-  ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-  ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-}
+vim.keymap.set('n', '<leader>u', function()
+  vim.cmd.UndotreeToggle()
+  local key = vim.api.nvim_replace_termcodes('<C-W>w', true, false, true)
+  vim.api.nvim_feedkeys(key, 'n', false)
+end, { desc = "Open [U]ndotree" })
 
--- register which-key VISUAL mode
--- required for visual <leader>hs (hunk stage) to work
-require('which-key').register({
-  ['<leader>'] = { name = 'VISUAL <leader>' },
-  ['<leader>h'] = { 'Git [H]unk' },
-}, { mode = 'v' })
+-- document existing key chains
+require('which-key').add({
+  { '<leader>g', group = '[G]it' },
+  { '<leader>h', group = 'Git [H]unk' },
+  { '<leader>l', group = '[L]SP' },
+  { '<leader>s', group = '[S]earch' },
+  { '<leader>t', group = '[T]oggle' },
+  { '<leader>w', group = '[W]orkspace' },
+  {
+    mode = 'v',
+    { '<leader>', group = 'VISUAL <leader>' },
+    { '<leader>h', group = 'Git [H]unk' },
+  }
+})
 
 -- [[ Configure highlight groups ]]
 vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", { bold = true, italic = true })
