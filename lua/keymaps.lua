@@ -20,6 +20,7 @@ vim.keymap.set('n', '<C-J>', '<C-W>w', { desc = 'Go to next window' })
 vim.keymap.set('n', '<C-H>', vim.cmd.bp, { desc = 'Go to previous buffer' })
 vim.keymap.set('n', '<C-L>', vim.cmd.bn, { desc = 'Go to next buffer' })
 vim.keymap.set('n', '<leader>;', vim.cmd.bd, { desc = 'Delete current buffer' })
+vim.keymap.set('n', '<leader>:', function() vim.cmd.bd('#') end, { desc = 'Delete alternate buffer' })
 vim.keymap.set('n', 'gp', '`[v`]', { desc = 'Select last [P]asted text' })
 vim.keymap.set('n', '<leader>f', vim.cmd.Ex, { desc = 'Open [F]iletree' })
 
