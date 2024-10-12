@@ -30,20 +30,14 @@ vim.g.python_indent = {
   continue = "shiftwidth()",
 }
 
--- [[ Highlight on yank ]]
-local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
-vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-  group = highlight_group,
-  pattern = '*',
-})
+if vim.uv.os_uname().sysname == 'Windows_NT' then
+  vim.o.shell = 'pwsh'
+end
 
 
 -- `lazy.nvim` plugin manager
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system {
     'git',
     'clone',
@@ -55,15 +49,9 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require('lazy').setup('plugins.install', {})
+require('lazy').setup('plugins')
 
--- Contains both plugin configurations and keymaps
-require('plugins.config')
-
-
-if vim.loop.os_uname().sysname == 'Windows_NT' then
-  vim.o.shell = 'pwsh'
-end
+require("more_config")
 
 -- The line beneath this is called `modeline`.
 -- vim: ts=2 sts=2 sw=2 et
