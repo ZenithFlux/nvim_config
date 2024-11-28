@@ -15,6 +15,7 @@ vim.wo.signcolumn = 'yes'
 vim.o.updatetime = 1000
 vim.o.scrolloff = 10
 vim.o.sidescrolloff = 30
+vim.g.netrw_list_hide = "^\\.\\.\\=/"
 vim.o.completeopt = "menu,preview,noinsert"
 vim.opt.guicursor:append('a:blinkon500-blinkoff500')
 vim.o.cino = '(0,m1,N-s,Ws,+0'
