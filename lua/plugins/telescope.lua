@@ -90,14 +90,17 @@ return {
   branch = '0.1.x',
   cmd = "Telescope",
   opts = {
-    defaults = {
-      file_ignore_patterns = { 'node_modules/', '%.git/', '%.venv.*/' },
-      layout_config = { preview_width = 0.5 },
-      path_display = function(_, path)
-        local tail = require("telescope.utils").path_tail(path)
-        return string.format("%s: %s", tail, path)
-      end,
-    },
+    defaults = vim.tbl_extend(
+      "force",
+      require("telescope.themes").get_ivy(),
+      {
+        file_ignore_patterns = { 'node_modules/', '%.git/', '%.venv.*/' },
+        path_display = function(_, path)
+          local tail = require("telescope.utils").path_tail(path)
+          return string.format("%s: %s", tail, path)
+        end,
+      }
+    ),
   },
   config = function(_, opts)
     require("telescope").setup(opts)
