@@ -19,6 +19,7 @@ vim.g.netrw_list_hide = "^\\.\\.\\=/"
 vim.o.completeopt = "menu,preview,noinsert"
 vim.opt.guicursor:append('a:blinkon500-blinkoff500')
 vim.o.cino = '(0,m1,N-s,Ws,+0'
+vim.diagnostic.config({ virtual_text = true })
 
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.o.ignorecase = true
