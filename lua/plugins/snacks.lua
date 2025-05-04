@@ -124,7 +124,7 @@ return {
     { "gri", function() Snacks.picker.lsp_implementations() end, desc = "Goto Implementation" },
     { "grt", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto T[y]pe Definition" },
     { "grR" , vim.cmd.LspRestart, desc = "[R]estart LSP" },
-    { "grF", vim.lsp.buf.format, desc = "[F]ormat current buffer" },
+    { "grf", ":Format<CR>", desc = "[F]ormat current buffer" },
     { "gO", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
     { "gW", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
   }
