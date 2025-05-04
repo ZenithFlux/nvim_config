@@ -22,6 +22,7 @@ local servers = {
     },
     root_dir = vim.uv.cwd,
   },
+  ruff = { enabled = false },
   marksman = {},
   cmake = {},
   clangd = {},
@@ -38,14 +39,18 @@ return {
       ensure_installed = vim.tbl_keys(servers),
       handlers = {
         function(server_name)
-          -- TODO: This should be used when supported by mason-lspconfig
-          -- vim.lsp.config(server_name, servers[server_name] or {})
-          -- vim.lsp.enable(server_name)
+          local config = servers[server_name] or {}
+          if config.enabled ~= nil and not config.enabled then
+            return
+          end
 
+          -- TODO: This should be used when supported by mason-lspconfig
+          -- vim.lsp.config(server_name, config)
+          -- vim.lsp.enable(server_name)
           ----------------------------------------------------
           -- TODO: remove this when the above method is used
           require('lspconfig')[server_name].setup(
-            vim.tbl_extend("keep", servers[server_name] or {}, {
+            vim.tbl_extend("keep", config, {
               capabilities = require("blink.cmp").get_lsp_capabilities(),
             })
           )
