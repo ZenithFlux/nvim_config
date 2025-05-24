@@ -1,8 +1,14 @@
 ---@module "snacks"
 
 local exclude_patterns = { 'node_modules/', '%.git/', '%.venv.*/' }
-local regular_opts = { hidden = true , exclude = exclude_patterns}
-local no_ign_opts = { hidden = true, ignored = true, exclude = exclude_patterns}
+
+local function regular_opts()
+  return { hidden = true , exclude = exclude_patterns}
+end
+
+local function no_ign_opts()
+  return { hidden = true, ignored = true, exclude = exclude_patterns}
+end
 
 -- Function to find the git root directory based on the current buffer's path
 local function find_git_root()
@@ -85,8 +91,8 @@ return {
 
     -- Grep
     { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },
-    { "<leader>/", function() Snacks.picker.grep(regular_opts) end, desc = "Grep" },
-    { "<leader>?", function() Snacks.picker.grep(no_ign_opts) end, desc = "Grep No-Ignore"},
+    { "<leader>/", function() Snacks.picker.grep(regular_opts()) end, desc = "Grep" },
+    { "<leader>?", function() Snacks.picker.grep(no_ign_opts()) end, desc = "Grep No-Ignore"},
     { "<leader>sg", vim.cmd.GrepGitRoot, desc = "Grep Git Root" },
     {
       "<leader>sw", function() Snacks.picker.grep_word() end,
@@ -96,8 +102,8 @@ return {
     -- search
     { "<leader>sp", function() Snacks.picker.pickers() end, desc = "Find Pickers"},
     { "<leader>sb", function() Snacks.picker.buffers() end, desc = "Buffers" },
-    { "<leader>sf", function() Snacks.picker.files(regular_opts) end, desc = "Find Files" },
-    { "<leader>sF", function() Snacks.picker.files(no_ign_opts) end, desc = "Find Files No-Ignore" },
+    { "<leader>sf", function() Snacks.picker.files(regular_opts()) end, desc = "Find Files" },
+    { "<leader>sF", function() Snacks.picker.files(no_ign_opts()) end, desc = "Find Files No-Ignore" },
     { '<leader>s"', function() Snacks.picker.registers() end, desc = "Registers" },
     { '<leader>s/', function() Snacks.picker.search_history() end, desc = "Find History" },
     { "<leader>sa", function() Snacks.picker.autocmds() end, desc = "Autocmds" },
@@ -125,7 +131,7 @@ return {
     { "grt", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto T[y]pe Definition" },
     { "grR" , vim.cmd.LspRestart, desc = "[R]estart LSP" },
     { "grf", ":Format<CR>", desc = "[F]ormat current buffer" },
-    { "gO", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
-    { "gW", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
+    { "grs", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
+    { "grw", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
   }
 }
