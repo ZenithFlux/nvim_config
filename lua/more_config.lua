@@ -5,11 +5,6 @@ local function onedark_mods()
     italic = true,
     bg = "#22252c",
   })
-  ---@type vim.api.keyset.get_hl_info | vim.api.keyset.highlight
-  local mp_hl = vim.api.nvim_get_hl(0, { name = "MatchParen" })
-  mp_hl.bg = "#434a57"
-  ---@cast mp_hl vim.api.keyset.highlight
-  vim.api.nvim_set_hl(0, "MatchParen", mp_hl)
 end
 
 
