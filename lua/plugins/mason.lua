@@ -20,45 +20,30 @@ local servers = {
         analysis = { typeCheckingMode = "off" },
       },
     },
-    root_dir = vim.uv.cwd,
   },
-  ruff = { enabled = false },
+  ruff = {},
   marksman = {},
   cmake = {},
   clangd = {},
 }
 
+for name, config in pairs(servers) do
+  vim.lsp.config(name, config)
+end
+
 return {
   {
     'williamboman/mason.nvim',
+    tag = 'stable',
     opts = {},
   },
   {
     'williamboman/mason-lspconfig.nvim',
+    tag = 'stable',
     opts = {
       ensure_installed = vim.tbl_keys(servers),
-      handlers = {
-        function(server_name)
-          local config = servers[server_name] or {}
-          if config.enabled ~= nil and not config.enabled then
-            return
-          end
-
-          -- TODO: This should be used when supported by mason-lspconfig
-          -- vim.lsp.config(server_name, config)
-          -- vim.lsp.enable(server_name)
-          ----------------------------------------------------
-          -- TODO: remove this when the above method is used
-          require('lspconfig')[server_name].setup(
-            vim.tbl_extend("keep", config, {
-              capabilities = require("blink.cmp").get_lsp_capabilities(),
-            })
-          )
-          ----------------------------------------------------
-        end,
-      },
+      automatic_enable = { exclude = { 'ruff' } },
     },
-    -- TODO: remove blink.cmp as dependency when vim.lsp.config is used
-    dependencies = { 'williamboman/mason.nvim', 'saghen/blink.cmp' },
+    dependencies = { 'williamboman/mason.nvim', 'neovim/nvim-lspconfig' },
   },
 }

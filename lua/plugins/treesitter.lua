@@ -1,5 +1,6 @@
 return {
   'nvim-treesitter/nvim-treesitter',
+  version = "*",
   build = ':TSUpdate',
   main = "nvim-treesitter.configs",
   opts = {
@@ -73,9 +74,13 @@ return {
 
   dependencies = {
     'nvim-treesitter/nvim-treesitter-textobjects',
-    'hiphish/rainbow-delimiters.nvim',
+    {
+      'HiPhish/rainbow-delimiters.nvim',
+      version = "*",
+    },
     {
       'nvim-treesitter/nvim-treesitter-context',
+      version = "*",
       opts = {
         max_lines = 2,
         multiline_threshold = 1,

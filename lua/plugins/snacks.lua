@@ -44,7 +44,7 @@ local function grep_git_root()
   local git_root = find_git_root()
   if git_root then
     local opts = vim.tbl_extend(
-      "force", regular_opts, { dirs = { git_root } }
+      "force", regular_opts(), { dirs = { git_root } }
     )
     Snacks.picker.grep(opts)
   end
@@ -54,6 +54,7 @@ vim.api.nvim_create_user_command('GrepGitRoot', grep_git_root, {})
 
 return {
   "folke/snacks.nvim",
+  tag = "stable",
   priority = 1000,
   lazy = false,
   dependencies = {
