@@ -67,14 +67,25 @@ vim.keymap.set('n', '<leader>;', function()
   end
 
   local alt_bufnr = vim.fn.bufnr('#')
+  local is_oil_buf = vim.fn.expand("%:p"):sub(1, 6) == "oil://"
 
-  if at_most_one_buf_listed() then
+  if is_oil_buf then
+    require("oil").close()
+  elseif at_most_one_buf_listed() then
     vim.cmd.bd()
   elseif alt_bufnr ~= -1 and vim.api.nvim_get_option_value("buflisted", { buf = alt_bufnr }) then
     vim.cmd.b('#')
-    vim.cmd.bd('#')
+    local ok, err = pcall(vim.cmd.bd, '#')
+    if not ok then
+      vim.cmd.b('#')
+      error(err)
+    end
   else
     vim.cmd.bn()
-    vim.cmd.bd('#')
+    local ok, err = pcall(vim.cmd.bd, '#')
+    if not ok then
+      vim.cmd.b('#')
+      error(err)
+    end
   end
 end, { desc = 'Delete current buffer' })
