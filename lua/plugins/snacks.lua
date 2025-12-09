@@ -1,56 +1,35 @@
 ---@module "snacks"
 
-local exclude_patterns = { 'node_modules/', '%.git/', '%.venv.*/' }
+local exclude_patterns = { 'node_modules/', '.git/', '.venv*/' }
 
 local function regular_opts()
-  return { hidden = true , exclude = exclude_patterns}
+  return { hidden = true , exclude = exclude_patterns }
 end
 
 local function no_ign_opts()
-  return { hidden = true, ignored = true, exclude = exclude_patterns}
+  return { hidden = true, ignored = true, exclude = exclude_patterns }
 end
 
--- Function to find the git root directory based on the current buffer's path
-local function find_git_root()
-  -- Use the current buffer's path as the starting point for the git search
-  local current_file = vim.api.nvim_buf_get_name(0)
-  if current_file:sub(1, 6) == "oil://" then
-    current_file = current_file:sub(7)
-  end
-  local current_dir = ""
-  local cwd = vim.uv.cwd() or ""
-  if current_file == '' then
-    current_dir = cwd
-  else
-    -- Extract the directory from the current file's path
-    if current_file:sub(-1) == "/" then
-      current_dir = current_file
-    else
-      current_dir = vim.fn.fnamemodify(current_file, ':h')
-    end
+local function get_current_dir()
+  local curr_path = vim.fn.expand("%:p")
+  if curr_path:sub(1, 6) == "oil://" then
+    return require("oil").get_current_dir()
   end
 
-  -- Find the Git root directory from the current file's path
-  local git_root = vim.fn.systemlist('git -C ' .. vim.fn.escape(current_dir, ' ') .. ' rev-parse --show-toplevel')[1]
-  if vim.v.shell_error ~= 0 then
-    vim.notify("GrepGitRoot: Not a git repository", vim.log.levels["WARN"])
-    return
+  local stat = vim.uv.fs_stat(curr_path)
+  if stat == nil then
+    error(curr_path .. " doesn't exist!")
   end
-  return git_root
+
+  if stat.type == "file" then
+    local dir_path = vim.fn.fnamemodify(curr_path, ":h")
+    return dir_path
+  elseif stat.type == "directory" then
+    return curr_path
+  end
+
+  error("Current path is neither file nor directory!")
 end
-
--- Custom live_grep function to search in git root
-local function grep_git_root()
-  local git_root = find_git_root()
-  if git_root then
-    local opts = vim.tbl_extend(
-      "force", regular_opts(), { dirs = { git_root } }
-    )
-    Snacks.picker.grep(opts)
-  end
-end
-
-vim.api.nvim_create_user_command('GrepGitRoot', grep_git_root, {})
 
 return {
   "folke/snacks.nvim",
@@ -94,7 +73,13 @@ return {
     { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },
     { "<leader>/", function() Snacks.picker.grep(regular_opts()) end, desc = "Grep" },
     { "<leader>?", function() Snacks.picker.grep(no_ign_opts()) end, desc = "Grep No-Ignore"},
-    { "<leader>sg", vim.cmd.GrepGitRoot, desc = "Grep Git Root" },
+    {
+      "<leader>sg", function()
+        local opts = no_ign_opts()
+        opts["dirs"] = { get_current_dir() }
+        Snacks.picker.grep(opts)
+      end, desc = "Grep Current Dir"
+    },
     {
       "<leader>sw", function() Snacks.picker.grep_word() end,
       desc = "Visual selection or word", mode = { "n", "x" },
