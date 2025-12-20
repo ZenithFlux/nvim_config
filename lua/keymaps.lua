@@ -1,3 +1,6 @@
+local utils = require('utils')
+
+-- Keymaps
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -18,6 +21,7 @@ vim.keymap.set('n', '<C-K>', '<C-W>W', { desc = 'Go to previous window' })
 vim.keymap.set('n', '<C-J>', '<C-W>w', { desc = 'Go to next window' })
 vim.keymap.set('n', '<C-H>', vim.cmd.bp, { desc = 'Go to previous buffer' })
 vim.keymap.set('n', '<C-L>', vim.cmd.bn, { desc = 'Go to next buffer' })
+vim.keymap.set('n', '<leader>;', utils.smart_curr_buf_del, { desc = 'Delete current buffer' })
 vim.keymap.set('n', '<leader>:', function() vim.cmd.bd('#') end, { desc = 'Delete alternate buffer' })
 vim.keymap.set('n', 'gp', '`[v`]', { desc = 'Select last [P]asted text' })
 vim.keymap.set('n', '<leader>f', vim.cmd.Oil, { desc = 'Open [F]iletree' })
@@ -25,9 +29,9 @@ vim.keymap.set('n', '<leader>f', vim.cmd.Oil, { desc = 'Open [F]iletree' })
 vim.keymap.set('v', '<leader>p', '"_dP', { desc = '[P]aste without yanking' })
 vim.keymap.set({ 'n', 'v' }, '<leader>y', '"+y', { desc = "[Y]ank to system clipboard" })
 vim.keymap.set('n', '<leader>Y', '"+y$', { desc = "Caps version of <leader>y" })
-vim.keymap.set('v', 'r', '"ry:%s~<C-R>r~~gc<Left><Left><Left>', { desc = '[R]eplace Selected Text' })
 vim.keymap.set('v', '<', '<gv', { desc = 'Outdent without exiting visual mode' })
 vim.keymap.set('v', '>', '>gv', { desc = 'Indent without exiting visual mode' })
+vim.keymap.set('v', '.', ":norm .<CR>", { desc = 'Repeat command for each line' })
 
 vim.keymap.set('t', '<Esc>', '<C-\\><C-N>', { desc = 'Exit Terminal Mode' })
 
@@ -47,45 +51,22 @@ vim.keymap.set('n', '<leader>tx', function()
   vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end, { desc = 'Toggle diagnostics' })
 
-vim.keymap.set('n', '<leader>;', function()
-  -- Smart buffer deletion: Prevents the window from closing by switching buffers
-  -- (to alternate or next listed) before calling `bd`, unless only one listed buffer exists.
+vim.keymap.set('v', '<leader>r', function()
+  local lines = utils.get_selected_text()
+  --- @cast lines table
+  local text = table.concat(lines, '\\n')
 
-  --- @returns bool
-  local function at_most_one_buf_listed()
-    local buf_list = vim.api.nvim_list_bufs()
-    local got_one = false
-    for _, bufnr in ipairs(buf_list) do
-      if vim.api.nvim_get_option_value("buflisted", { buf = bufnr }) then
-        if got_one then
-          return false
-        end
-        got_one = true
-      end
-    end
-    return true
+  local o = ''
+  if vim.fn.getpos(".")[2] > vim.fn.getpos("v")[2] then
+    o = 'o'
   end
 
-  local alt_bufnr = vim.fn.bufnr('#')
-  local is_oil_buf = vim.fn.expand("%:p"):sub(1, 6) == "oil://"
+  utils.vim_send_keys(o .. '<Esc>:.,$s~' .. text .. '~~gc<Left><Left><Left>')
+end, { desc = 'Replace Next Matching' })
 
-  if is_oil_buf then
-    require("oil").close()
-  elseif at_most_one_buf_listed() then
-    vim.cmd.bd()
-  elseif alt_bufnr ~= -1 and vim.api.nvim_get_option_value("buflisted", { buf = alt_bufnr }) then
-    vim.cmd.b('#')
-    local ok, err = pcall(vim.cmd.bd, '#')
-    if not ok then
-      vim.cmd.b('#')
-      error(err)
-    end
-  else
-    vim.cmd.bn()
-    local ok, err = pcall(vim.cmd.bd, '#')
-    if not ok then
-      vim.cmd.b('#')
-      error(err)
-    end
-  end
-end, { desc = 'Delete current buffer' })
+vim.keymap.set('v', '<leader>R', function()
+  local lines = utils.get_selected_text()
+  --- @cast lines table
+  local text = table.concat(lines, '\\n')
+  utils.vim_send_keys('<Esc>:%s~' .. text .. '~~gc<Left><Left><Left>')
+end, { desc = 'Replace All Matching' })
