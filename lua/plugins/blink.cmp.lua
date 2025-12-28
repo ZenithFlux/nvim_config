@@ -19,6 +19,15 @@ return {
     },
     sources = {
       default = { 'lsp', 'path', 'snippets', 'buffer' },
+      providers = {
+        path = {
+          opts = {
+            get_cwd = function(_)
+              return vim.fn.getcwd()
+            end,
+          },
+        },
+      },
     },
     fuzzy = { implementation = "prefer_rust_with_warning" }
   },

@@ -17,7 +17,10 @@ local servers = {
   pyright = {
     settings = {
       python = {
-        analysis = { typeCheckingMode = "off" },
+        analysis = {
+          typeCheckingMode = "off",
+          useLibraryCodeForTypes = false,
+        },
       },
     },
   },
