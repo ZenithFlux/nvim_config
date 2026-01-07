@@ -1,14 +1,14 @@
 local M = {}
 
---- @param keys string
+---@param keys string
 function M.vim_send_keys(keys)
   keys = vim.api.nvim_replace_termcodes(keys, true, false, true)
   vim.api.nvim_feedkeys(keys, "m", false)
 end
 
+---Returns the currently selected text in visual/visual-line mode.
+---A list of lines is returned.
 function M.get_selected_text()
-  --- Returns the currently selected text in visual/visual-line mode.
-  --- A list of lines is returned.
   local mode = vim.fn.mode()
   if mode:lower() ~= "v" then
     return ""
@@ -20,10 +20,9 @@ function M.get_selected_text()
   return lines
 end
 
+---Smart current buffer deletion: Prevents the window from closing by switching buffers
+---(to alternate or next listed) before calling `bd`, unless only one listed buffer exists.
 function M.smart_curr_buf_del()
-  -- Smart current buffer deletion: Prevents the window from closing by switching buffers
-  -- (to alternate or next listed) before calling `bd`, unless only one listed buffer exists.
-
   --- @returns bool
   local function at_most_one_buf_listed()
     local buf_list = vim.api.nvim_list_bufs()
@@ -61,6 +60,112 @@ function M.smart_curr_buf_del()
       error(err)
     end
   end
+end
+
+---Only 'require' a pkg when a function under it is called.
+---@param pkg_name string
+function M.require_on_call(pkg_name)
+  return setmetatable({}, {
+    __index = function(_, value)
+      return function(...)
+        require(pkg_name)[value](...)
+      end
+    end
+  })
+end
+
+---Split a command string into list of arguments.
+---Follows similar rules as bash command line.
+---@param cmd_text string # E.g. "grep -rn 'hello sam'"
+---@return string[] # E.g. {"grep", "-rn", "hello sam"}
+function M.split_cmd_args(cmd_text)
+  local args = {}
+  local i = 1
+
+  while i <= #cmd_text do
+    local c = cmd_text:sub(i, i)
+    while c == " " do
+      i = i + 1
+      if i > #cmd_text then
+        break
+      end
+      c = cmd_text:sub(i, i)
+    end
+    if i > #cmd_text then
+      break
+    end
+
+    if c == '"' then
+      i = i + 1
+      if i > #cmd_text then
+        error('Unclosed "')
+      end
+      c = cmd_text:sub(i, i)
+      local one_arg = ""
+      while c ~= '"' do
+        if c == "\\" then
+          i = i + 1
+          if i > #cmd_text then
+            break
+          end
+          c = cmd_text:sub(i, i)
+          if not (c == "$" or c == "`" or c == '"' or c == "\\") then
+            one_arg = one_arg .. "\\"
+          end
+        end
+
+        one_arg = one_arg .. c
+        i = i + 1
+        if i > #cmd_text then
+          break
+        end
+        c = cmd_text:sub(i, i)
+      end
+
+      if i > #cmd_text then
+        error('Unclosed "')
+      else
+        args[#args + 1] = one_arg
+      end
+    elseif c == "'" then
+      i = i + 1
+      local si = i
+      while i <= #cmd_text and cmd_text:sub(i, i) ~= "'" do
+        i = i + 1
+      end
+      if i > #cmd_text then
+        error("Unclosed '")
+      else
+        args[#args + 1] = cmd_text:sub(si, i - 1)
+      end
+    else
+      local one_arg = ""
+      while not (c == " " or c == "'" or c == '"') do
+        if c == "\\" then
+          i = i + 1
+          if i > #cmd_text then
+            error("'\\' should be followed by some char")
+          end
+          c = cmd_text:sub(i, i)
+        end
+
+        one_arg = one_arg .. c
+        i = i + 1
+        if i > #cmd_text then
+          break
+        end
+        c = cmd_text:sub(i, i)
+      end
+
+      args[#args + 1] = one_arg
+      i = i - 1
+    end
+
+    -- `i` will always be at the end of the last arg
+    i = i + 1
+  end
+
+  return args
 end
 
 return M

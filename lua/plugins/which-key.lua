@@ -14,6 +14,7 @@ return {
     end,
     spec = {
       { 'gr', group = 'LSP' },
+      { '<leader>d', group = '[D]ebugger' },
       { '<leader>g', group = '[G]it' },
       { '<leader>h', group = 'Git [H]unk' },
       { '<leader>s', group = '[S]earch' },
@@ -22,7 +23,9 @@ return {
       {
         mode = 'v',
         { '<leader>', group = 'VISUAL <leader>' },
+        { '<leader>d', group = '[D]ebugger' },
         { '<leader>h', group = 'Git [H]unk' },
+        { '<leader>s', group = '[S]earch' },
       }
     },
   },
