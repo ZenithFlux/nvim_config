@@ -8,10 +8,11 @@ end
 
 ---Returns the currently selected text in visual/visual-line mode.
 ---A list of lines is returned.
+---@return string[]
 function M.get_selected_text()
   local mode = vim.fn.mode()
   if mode:lower() ~= "v" then
-    return ""
+    return {}
   end
 
   local s_pos = vim.fn.getpos('.')
@@ -72,6 +73,26 @@ function M.require_on_call(pkg_name)
       end
     end
   })
+end
+
+---Splits a string based on a separator character
+---@param s string The string to be split
+---@param sep string The char to be used as a separator
+---@return string[]
+function M.split_string(s, sep)
+    if #sep ~= 1 then
+        error("Only single char separators are supported")
+    end
+    local si = 1
+    local chunks = {}
+    for i = 1, #s do
+        if s:sub(i, i) == sep then
+            chunks[#chunks + 1] = s:sub(si, i-1)
+            si = i + 1
+        end
+    end
+    chunks[#chunks + 1] = s:sub(si, #s)
+    return chunks
 end
 
 ---Split a command string into list of arguments.

@@ -53,7 +53,10 @@ end, { desc = 'Toggle diagnostics' })
 
 vim.keymap.set('v', '<leader>r', function()
   local lines = utils.get_selected_text()
-  --- @cast lines table
+  for i, l in ipairs(lines) do
+    local l_splits = utils.split_string(l, "\\")
+    lines[i] = table.concat(l_splits, "\\\\", 1, #l_splits)
+  end
   local text = table.concat(lines, '\\n')
 
   local o = ''
@@ -61,12 +64,16 @@ vim.keymap.set('v', '<leader>r', function()
     o = 'o'
   end
 
-  utils.vim_send_keys(o .. '<Esc>:.,$s~' .. text .. '~~gc<Left><Left><Left>')
+  utils.vim_send_keys(o .. '<Esc>:.,$s~\\V\\C' .. text .. '~~gc<Left><Left><Left>')
 end, { desc = 'Replace Next Matching' })
 
 vim.keymap.set('v', '<leader>R', function()
   local lines = utils.get_selected_text()
-  --- @cast lines table
+  for i, l in ipairs(lines) do
+    local l_splits = utils.split_string(l, "\\")
+    lines[i] = table.concat(l_splits, "\\\\", 1, #l_splits)
+  end
   local text = table.concat(lines, '\\n')
-  utils.vim_send_keys('<Esc>:%s~' .. text .. '~~gc<Left><Left><Left>')
+
+  utils.vim_send_keys('<Esc>:%s~\\V\\C' .. text .. '~~gc<Left><Left><Left>')
 end, { desc = 'Replace All Matching' })
