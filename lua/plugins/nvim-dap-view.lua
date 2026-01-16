@@ -16,8 +16,8 @@ local keymaps = {
   { "n", "<S-Down>", lazy_dap.step_back, { desc = "Step back" } },
 
   { {"n", "v"}, "<leader>dw", dap_view.add_expr, { desc = "Watch expression" } },
-  { "n", "<leader>ds", lazy_dap.terminate, { desc = "Stop Debugger" } },
-  { "n", "<leader>dr", lazy_dap.restart,   { desc = "Restart Session" } },
+  { "n", "<leader>ds", lazy_dap.restart, { desc = "Restart Session" } },
+  { "n", "<leader>dx", lazy_dap.terminate,   { desc = "Stop Debugger" } },
   { "n", "<leader>dl", false },
 }
 local prev_kms = {}
