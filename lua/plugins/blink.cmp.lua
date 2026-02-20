@@ -3,7 +3,8 @@ return {
   version = '1.*',
   opts = {
     keymap = {
-      preset = 'enter',
+      preset = 'default',
+      ['<Tab>'] = { "accept", "fallback" },
       ['<C-space>'] = {},
       ['<C-n>'] = { "show", "select_next", "fallback_to_mappings" }
     },

@@ -47,7 +47,7 @@ vim.keymap.set('n', '<leader>ti', function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ nil }))
 end, { desc = "Toggle inlay hints" })
 
-vim.keymap.set('n', '<leader>tx', function()
+vim.keymap.set('n', '<leader>td', function()
   vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end, { desc = 'Toggle diagnostics' })
 
