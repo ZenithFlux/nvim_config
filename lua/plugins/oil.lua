@@ -1,5 +1,7 @@
 return {
   'stevearc/oil.nvim',
+  tag = "stable",
+  lazy = false,
   opts = {
     view_options = {
       is_hidden_file = function(name)
@@ -8,6 +10,6 @@ return {
     },
   },
   dependencies = {
-    { "echasnovski/mini.icons", opts = {} }
+    { "nvim-mini/mini.icons", opts = {} }
   },
 }

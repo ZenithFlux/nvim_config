@@ -5,8 +5,8 @@ vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.hlsearch = false
-vim.wo.number = true
-vim.wo.relativenumber = true
+vim.o.number = true
+vim.o.relativenumber = true
 vim.o.mouse = 'a'
 vim.o.linebreak = true
 vim.o.breakindent = true
@@ -33,6 +33,7 @@ vim.g.python_indent = {
 }
 
 if vim.uv.os_uname().sysname == 'Windows_NT' then
+  vim.notify("This neovim config was written only for Linux-x64, not Windows.", vim.log.levels.WARN)
   vim.o.shell = 'pwsh'
 end
 

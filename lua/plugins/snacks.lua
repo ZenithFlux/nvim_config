@@ -36,9 +36,6 @@ return {
   tag = "stable",
   priority = 1000,
   lazy = false,
-  dependencies = {
-    { "echasnovski/mini.icons", opts = {} }
-  },
   opts = {
     picker = {
       win = {
@@ -119,5 +116,9 @@ return {
     { "grf", ":Format<CR>", desc = "[F]ormat current buffer" },
     { "grs", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
     { "grw", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
-  }
+  },
+
+  dependencies = {
+    { "nvim-mini/mini.icons", opts = {} }
+  },
 }

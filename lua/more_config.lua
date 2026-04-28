@@ -30,7 +30,7 @@ hl_mods({ match = vim.g.colors_name })
 augroup = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
-    vim.highlight.on_yank()
+    vim.hl.on_yank()
   end,
   group = augroup,
 })
