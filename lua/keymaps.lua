@@ -43,6 +43,10 @@ vim.keymap.set('n', '<leader>tr', function()
   vim.bo.readonly = not vim.bo.readonly
 end, { desc = 'Toggle readonly' })
 
+vim.keymap.set('n', '<leader>ts', function()
+  vim.o.spell = not vim.o.spell
+end, { desc = 'Toggle spell checking' })
+
 vim.keymap.set('n', '<leader>ti', function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ nil }))
 end, { desc = "Toggle inlay hints" })
